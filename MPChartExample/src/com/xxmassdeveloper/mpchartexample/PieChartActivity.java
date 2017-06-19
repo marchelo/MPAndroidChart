@@ -20,11 +20,13 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -34,8 +36,8 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class PieChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+public class PieChartActivity extends DemoBase/* implements OnSeekBarChangeListener,
+        OnChartValueSelectedListener*/ {
 
     private PieChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -56,59 +58,72 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarX.setProgress(4);
         mSeekBarY.setProgress(10);
 
+//        mSeekBarX.setOnSeekBarChangeListener(this);
+//        mSeekBarY.setOnSeekBarChangeListener(this);
+
         mChart = (PieChart) findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
 
-        mChart.setDragDecelerationFrictionCoef(0.95f);
+        initPieChart(mChart);
+        initPieChart((PieChart) findViewById(R.id.chart2));
+    }
 
-        mChart.setCenterTextTypeface(mTfLight);
-        mChart.setCenterText(generateCenterSpannableText());
+    private void initPieChart(PieChart pieChart) {
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5, 10, 5, 5);
 
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
 
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+        pieChart.setCenterTextTypeface(mTfLight);
+        pieChart.setCenterText(generateCenterSpannableText());
 
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.WHITE);
 
-        mChart.setDrawCenterText(true);
+        pieChart.setTransparentCircleColor(Color.WHITE);
+        pieChart.setTransparentCircleAlpha(110);
 
-        mChart.setRotationAngle(0);
+        pieChart.setHoleRadius(58f);
+        pieChart.setTransparentCircleRadius(61f);
+
+        pieChart.setDrawCenterText(true);
+
+        pieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
+        pieChart.setRotationEnabled(true);
+        pieChart.setHighlightPerTapEnabled(true);
 
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
+//        ChartHighlighter highlighter = new ChartHighlighter(pieChart);
+//
+//        pieChart.setHighlighter(highlighter);
+//        pieChart.getHighlighter().
+
+        // pieChart.setUnit(" €");
+        // pieChart.setDrawUnitsInChart(true);
 
         // add a selection listener
-        mChart.setOnChartValueSelectedListener(this);
+//        pieChart.setOnChartValueSelectedListener(this);
 
-        setData(4, 100);
+        setData(pieChart, 4, 100);
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
+        pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // pieChart.spin(2000, 0, 360);
 
-        mSeekBarX.setOnSeekBarChangeListener(this);
-        mSeekBarY.setOnSeekBarChangeListener(this);
+//        Legend l = pieChart.getLegend();
+//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+//        l.setDrawInside(false);
+//        l.setXEntrySpace(7f);
+//        l.setYEntrySpace(0f);
+//        l.setYOffset(0f);
 
-        Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(0f);
+        pieChart.getLegend().setEnabled(false);
 
         // entry label styling
-        mChart.setEntryLabelColor(Color.WHITE);
-        mChart.setEntryLabelTypeface(mTfRegular);
-        mChart.setEntryLabelTextSize(12f);
+        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setEntryLabelTypeface(mTfRegular);
+        pieChart.setEntryLabelTextSize(12f);
     }
 
     @Override
@@ -117,86 +132,86 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.actionToggleValues: {
+//                for (IDataSet<?> set : mChart.getData().getDataSets())
+//                    set.setDrawValues(!set.isDrawValuesEnabled());
+//
+//                mChart.invalidate();
+//                break;
+//            }
+//            case R.id.actionToggleIcons: {
+//                for (IDataSet<?> set : mChart.getData().getDataSets())
+//                    set.setDrawIcons(!set.isDrawIconsEnabled());
+//
+//                mChart.invalidate();
+//                break;
+//            }
+//            case R.id.actionToggleHole: {
+//                if (mChart.isDrawHoleEnabled())
+//                    mChart.setDrawHoleEnabled(false);
+//                else
+//                    mChart.setDrawHoleEnabled(true);
+//                mChart.invalidate();
+//                break;
+//            }
+//            case R.id.actionDrawCenter: {
+//                if (mChart.isDrawCenterTextEnabled())
+//                    mChart.setDrawCenterText(false);
+//                else
+//                    mChart.setDrawCenterText(true);
+//                mChart.invalidate();
+//                break;
+//            }
+//            case R.id.actionToggleXVals: {
+//
+//                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
+//                mChart.invalidate();
+//                break;
+//            }
+//            case R.id.actionSave: {
+//                // mChart.saveToGallery("title"+System.currentTimeMillis());
+//                mChart.saveToPath("title" + System.currentTimeMillis(), "");
+//                break;
+//            }
+//            case R.id.actionTogglePercent:
+//                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
+//                mChart.invalidate();
+//                break;
+//            case R.id.animateX: {
+//                mChart.animateX(1400);
+//                break;
+//            }
+//            case R.id.animateY: {
+//                mChart.animateY(1400);
+//                break;
+//            }
+//            case R.id.animateXY: {
+//                mChart.animateXY(1400, 1400);
+//                break;
+//            }
+//            case R.id.actionToggleSpin: {
+//                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
+//                        .EaseInCubic);
+//                break;
+//            }
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//
+//        tvX.setText("" + (mSeekBarX.getProgress()));
+//        tvY.setText("" + (mSeekBarY.getProgress()));
+//
+//        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
+//    }
 
-        switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                for (IDataSet<?> set : mChart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleIcons: {
-                for (IDataSet<?> set : mChart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHole: {
-                if (mChart.isDrawHoleEnabled())
-                    mChart.setDrawHoleEnabled(false);
-                else
-                    mChart.setDrawHoleEnabled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionDrawCenter: {
-                if (mChart.isDrawCenterTextEnabled())
-                    mChart.setDrawCenterText(false);
-                else
-                    mChart.setDrawCenterText(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleXVals: {
-
-                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
-                mChart.saveToPath("title" + System.currentTimeMillis(), "");
-                break;
-            }
-            case R.id.actionTogglePercent:
-                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
-                mChart.invalidate();
-                break;
-            case R.id.animateX: {
-                mChart.animateX(1400);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(1400);
-                break;
-            }
-            case R.id.animateXY: {
-                mChart.animateXY(1400, 1400);
-                break;
-            }
-            case R.id.actionToggleSpin: {
-                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
-                        .EaseInCubic);
-                break;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        tvX.setText("" + (mSeekBarX.getProgress()));
-        tvY.setText("" + (mSeekBarY.getProgress()));
-
-        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
-    }
-
-    private void setData(int count, float range) {
+    private void setData(PieChart pieChart, int count, float range) {
 
         float mult = range;
 
@@ -216,12 +231,13 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
-        dataSet.setSelectionShift(5f);
+        dataSet.setSelectionShift(25f);
 
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
+        colors.add(Color.TRANSPARENT);
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 
@@ -247,12 +263,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         data.setValueTypeface(mTfLight);
-        mChart.setData(data);
+        pieChart.setData(data);
 
         // undo all highlights
-        mChart.highlightValues(null);
+        pieChart.highlightValues(null);
 
-        mChart.invalidate();
+        pieChart.invalidate();
     }
 
     private SpannableString generateCenterSpannableText() {
@@ -267,30 +283,30 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         return s;
     }
 
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-
-        if (e == null)
-            return;
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", index: " + h.getX()
-                        + ", DataSet index: " + h.getDataSetIndex());
-    }
-
-    @Override
-    public void onNothingSelected() {
-        Log.i("PieChart", "nothing selected");
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
+//    @Override
+//    public void onValueSelected(Entry e, Highlight h) {
+//
+//        if (e == null)
+//            return;
+//        Log.i("VAL SELECTED",
+//                "Value: " + e.getY() + ", index: " + h.getX()
+//                        + ", DataSet index: " + h.getDataSetIndex());
+//    }
+//
+//    @Override
+//    public void onNothingSelected() {
+//        Log.i("PieChart", "nothing selected");
+//    }
+//
+//    @Override
+//    public void onStartTrackingTouch(SeekBar seekBar) {
+//        // TODO Auto-generated method stub
+//
+//    }
+//
+//    @Override
+//    public void onStopTrackingTouch(SeekBar seekBar) {
+//        // TODO Auto-generated method stub
+//
+//    }
 }

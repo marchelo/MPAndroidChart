@@ -54,6 +54,7 @@ public abstract class DataRenderer extends Renderer {
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
+        mRenderPaint.setShadowLayer(30.0f, 0.0f, 2.0f, 0xFF000000);
 
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
 
